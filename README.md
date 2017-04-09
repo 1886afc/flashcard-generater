@@ -1,1 +1,1 @@
-# flashcard-generater
+# flashcard-generator
