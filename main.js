@@ -1,16 +1,21 @@
 var inquirer = require("inquirer");
 var fs = require('fs');
 var BasicCard = require("./basicCard");
-var Cloze = require("./clozeCard");
+var ClozeCard = require("./clozeCard");
 
 //variables
 // holds value for card type that is made
 var cardType = process.argv[2];
+//holds number of questions to make
+var numQs = parseFloat(process.argv[3])
 //array that holds questions
 var basicQuestions = [];
 var clozeQuestions = [];
 
+
+
 //functions
+// create basic questions function
 var bQuestions = function() {
 		
 	if(basicQuestions.length < 2) {
@@ -35,23 +40,52 @@ var bQuestions = function() {
 		console.log(basicQuestions)
 	}
 };
+//create cloze questions function
+var cQuestions = function() {
+		
+	if(clozeQuestions.length < 2) {
+		inquirer.prompt([
+			{
+				name: "fullText",
+				message: "what is the question?"
+			}, {
+				name: "clozeDeletion",
+				message: "part of question you would like to leave out",
+			}, {
+				name: "partialText",
+				message: "question with deletion left out",
+			}
 
-
-
-
-
-
-
-//pompt telling user to choose cloze or basic if none is chosen
-// if (cardType === undefined) {
-// 	console.log("Please choose either basic or cloze")
-// }
-if (cardType === "basic") {
-	bQuestions()	   
-	
-}else {
-	console.log("input cloze or basic");
+		]).then(function(answer){
+			var newCloze = new ClozeCard(answer.fullText, answer.clozeDeletion, answer.partialText);
+			
+			clozeQuestions.push(newCloze);
+			fs.appendFile('clozeCard.txt', JSON.stringify(newCloze, null, 2) + "\n");
+			//run basic question function again
+			cQuestions();
+		});
+	} else {
+		console.log(clozeQuestions)
+	}
 };
+
+//getting the party started
+if (cardType === "basic") {
+	bQuestions();	   
+	
+}else if(cardType === "cloze") {
+	cQuestions();
+}else {
+	console.log(" please input cloze or basic and number of questions");
+};
+
+
+
+
+
+
+
+
 
 
 	

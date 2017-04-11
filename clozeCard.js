@@ -2,13 +2,14 @@
 
 var fs = require('fs');
 
-function ClozeCard(clozeDeletion, statement) {
+function ClozeCard(fullText, clozeDeletion, partialText) {
+	this.fullText = fullText;
 	this.clozeDeletion = clozeDeletion;
-	this.statement = statement;
+	this.partialText = partialText;
 };
 
 ClozeCard.prototype.printInfo = function() {
-	console.log("Cloze deletion: " + this.clozeDeletion + "\nStatement: " + this.statement);
+	console.log("full text " + this.fullText + "\nCloze deletion: " + this.clozeDeletion + "\npartialText: " + this.partialText);
 };
 
 module.exports = ClozeCard;
